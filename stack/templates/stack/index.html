@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <!-- title -->
+    <title>stack exchange questions</title>
+    <!-- this code written by @mxbialostocki -->
+ 
+  </head>
+  <body>
+    <div id="root" style="text-align: center">
+      {% if question_list %}
+        <ul>
+        {% for question in question_list %}
+            <li>{{ question.question_name }}</li>
+        {% endfor %}
+        </ul>
+      {% else %}
+          <p>No questions are available.</p>
+      {% endif %}
+    </div>
+  </body>
+</html>

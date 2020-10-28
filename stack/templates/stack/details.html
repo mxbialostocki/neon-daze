@@ -1,0 +1,8 @@
+<h1>{{ question.question_name }}</h1>
+{% if error_message %}
+  <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+{% for detail in question.all %}
+    <p>{{ detail.question_name }}</p>>
+{% endfor %}
