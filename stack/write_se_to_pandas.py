@@ -1,46 +1,32 @@
 import pandas as pd
-
+from pandas import json_normalize, to_datetime
 # load the local json file to a pandas dataframe
 data_path = "./data/items.json"
-df = pd.read_json(data_path)
+json_data = pd.read_json(data_path, orient='records')
+items = json_data["items"]
+df = pd.DataFrame(json_normalize(items))
 
 # print the head to check data
-print(df.head())
+# print(df.head(1))
+# print(df.shape)
 
-df.shape
+# iterate over DataFrame to print question_id and title to terminal
+for index, row in df.iterrows():
+  print('question_id:', row.question_id)
+  print('question::', row.title, end='\n\n')
 
-# loop over columns
-# for column_name in df:
-#   print(type(column_name))
-#   print(column_name)
-#   print('/////////////\n')
+def return_view_count(df):
+  highest_views = 0
+  # iterate over DataFrame to check for view_count 
+  for index, row in df.iterrows():
+    # print(row.view_count)
+    if row.view_count > highest_views:
+      highest_views = row.view_count
+    # print('highest view count:', highest_views)
+  return highest_views
 
-# for column_name, item in df.iteritems():
-#   print(type(column_name))
-#   print(column_name)
-#   print('~~~~~~')
-
-#   print(type(item))
-#   print(item)
-#   print('------')
-
-# for index, row in df.iterrows():
-#   print(type(index))
-#   print(index)
-#   print('~~~~~~')
-
-#   print(type(row))
-#   print(row[0])
-#   print('------')
-
-for item in df['items']:
-  print(item['title'])
-  print(item['view_count'])
-  print(item['creation_date'])
-
-# def return_highest_view_count(dataframe):
-#   for item in dataframe:
-#     for entry in items:
-
-# more_than_five = df['items'].loc[(['view_count'] >= 5)]
-# print(more_than_five)
+highest_view_count = return_view_count(df)
+most_viewed_question = df.loc[df.view_count == highest_view_count]
+biggest_day = to_datetime(most_viewed_question.creation_date, unit='s')
+print('MOST VIEWED QUESTION: \n', most_viewed_question.title, end='\n\n')
+print('... WHICH WAS CREATED ON: \n', biggest_day, end='\n\n')
